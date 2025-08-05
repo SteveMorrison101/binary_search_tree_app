@@ -1,5 +1,9 @@
 package BinarySearchTreeApp;
 
-public class TreeRepository {
-    
+import org.springframework.data.jpa.repository.JpaRepository;
+
+// Repository interface for TreeEntity
+public interface TreeRepository extends JpaRepository<TreeEntity, Long> {
+
 }
+

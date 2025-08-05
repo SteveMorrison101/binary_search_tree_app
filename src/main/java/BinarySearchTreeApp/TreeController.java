@@ -1,62 +1,59 @@
 package BinarySearchTreeApp;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-import java.util.*;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.ui.Model;
 
-@RestController
+@Controller
 public class TreeController {
 
     @Autowired
     private TreeRepository treeRepository;
 
-    // Route to show the EnterNumbers.html page
-    @GetMapping("/enter-numbers")
+    // Load form at home page
+    @GetMapping("/")
+    public String home() {
+        return "EnterNumbers";
+    }
+
+    @GetMapping("/enterNumbers")
     public String enterNumbers() {
-        return "EnterNumbers"; // This will load templates/EnterNumbers.html
+        return "EnterNumbers";
     }
 
-    // Route to process the numbers entered by the user
-    @PostMapping("/process-numbers")
-    public Map<String, Object> processNumbers(@RequestParam("numbers") String numbers) {
-        // Create a new BST
+    @PostMapping("/createTree")
+    public String createTree(@RequestParam("numbers") String numbers, Model model) {
         BinarySearchTree bst = new BinarySearchTree();
-
-        // Split the string and insert numbers into the BST
-        String[] numberArray = numbers.split(",");
-        for (int i = 0; i < numberArray.length; i++) {
-            try {
-                int value = Integer.parseInt(numberArray[i].trim());
-                bst.insert(value);
-            } catch (NumberFormatException e) {
-                System.out.println("Invalid number skipped: " + numberArray[i]);
-            }
+        String[] numArray = numbers.split(",");
+        for (String num : numArray) {
+            bst.insert(Integer.parseInt(num.trim()));
         }
-
-        // Convert BST to JSON-like Map
-        Map<String, Object> treeJson = new HashMap<>();
-        treeJson.put("root", nodeToMap(bst.root));
-
-        // Save input and tree structure to database
-        TreeEntity treeEntity = new TreeEntity();
-        treeEntity.setInputNumbers(numbers);
-        treeEntity.setTreeJson(treeJson.toString());
-        treeRepository.save(treeEntity);
-
-        // Return tree JSON to the user
-        return treeJson;
+        String treeJson = convertBSTToJson(bst.root);
+        TreeEntity entity = new TreeEntity();
+        entity.setInputNumbers(numbers);
+        entity.setTreeJson(treeJson);
+        treeRepository.save(entity);
+        model.addAttribute("treeJson", treeJson);
+        return "ViewTree";
     }
 
-    // Convert a BinaryNode to a Map (recursively)
-    private Map<String, Object> nodeToMap(TreeNode node) {
+    @GetMapping("/viewSubmissions")
+    public String viewSubmissions(Model model) {
+        model.addAttribute("submissions", treeRepository.findAll());
+        return "ViewSubmissions";
+    }
+
+    private String convertBSTToJson(TreeNode node) {
         if (node == null) {
-            return null;
+            return "null";
         }
-        Map<String, Object> map = new HashMap<>();
-        map.put("value", node.value);
-        map.put("left", nodeToMap(node.left));
-        map.put("right", nodeToMap(node.right));
-        return map;
+        return "{\"value\":" + node.value + ",\"left\":" + convertBSTToJson(node.left) + ",\"right\":" + convertBSTToJson(node.right) + "}";
     }
 }
+
+
+
 
