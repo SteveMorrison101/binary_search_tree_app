@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Tree Created</title>
+</head>
+<body>
+    <h1>Tree Created Successfully</h1>
+
+    <p><strong>Input Numbers:</strong> <span th:text="${inputNumbers}"></span></p>
+    <p><strong>Tree Structure (JSON):</strong></p>
+    <pre th:text="${treeJson}"></pre>
+
+    <br>
+    <form action="/viewSubmissions" method="get">
+        <button type="submit">View Previous Trees</button>
+    </form>
+
+    <br>
+    <a href="/enterNumbers">Enter New Numbers</a>
+</body>
+</html>

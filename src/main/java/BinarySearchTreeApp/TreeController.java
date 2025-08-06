@@ -32,18 +32,23 @@ public class TreeController {
             bst.insert(Integer.parseInt(num.trim()));
         }
         String treeJson = convertBSTToJson(bst.root);
+
         TreeEntity entity = new TreeEntity();
         entity.setInputNumbers(numbers);
         entity.setTreeJson(treeJson);
         treeRepository.save(entity);
+
+        model.addAttribute("inputNumbers", numbers);
         model.addAttribute("treeJson", treeJson);
+
+        // Show the created tree immediately
         return "ViewTree";
     }
 
     @GetMapping("/viewSubmissions")
     public String viewSubmissions(Model model) {
-        model.addAttribute("submissions", treeRepository.findAll());
-        return "ViewSubmissions";
+        model.addAttribute("trees", treeRepository.findAll());
+        return "previous-trees";
     }
 
     private String convertBSTToJson(TreeNode node) {
@@ -53,7 +58,3 @@ public class TreeController {
         return "{\"value\":" + node.value + ",\"left\":" + convertBSTToJson(node.left) + ",\"right\":" + convertBSTToJson(node.right) + "}";
     }
 }
-
-
-
-
