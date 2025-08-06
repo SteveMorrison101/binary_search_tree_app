@@ -13,45 +13,54 @@ public class TreeController {
     @Autowired
     private TreeRepository treeRepository;
 
-    // Load form at home page
+    // Show form at homepage
     @GetMapping("/")
     public String home() {
-        return "EnterNumbers";
+        return "enter-numbers";
     }
 
-    @GetMapping("/enterNumbers")
+    // Show page to enter numbers
+    @GetMapping("/enter-numbers")
     public String enterNumbers() {
-        return "EnterNumbers";
+        return "enter-numbers";
     }
 
-    @PostMapping("/createTree")
-    public String createTree(@RequestParam("numbers") String numbers, Model model) {
-        BinarySearchTree bst = new BinarySearchTree();
-        String[] numArray = numbers.split(",");
-        for (String num : numArray) {
-            bst.insert(Integer.parseInt(num.trim()));
-        }
-        String treeJson = convertBSTToJson(bst.root);
-
-        TreeEntity entity = new TreeEntity();
-        entity.setInputNumbers(numbers);
-        entity.setTreeJson(treeJson);
-        treeRepository.save(entity);
-
-        model.addAttribute("inputNumbers", numbers);
-        model.addAttribute("treeJson", treeJson);
-
-        // Show the created tree immediately
-        return "ViewTree";
-    }
-
-    @GetMapping("/viewSubmissions")
+    // Show all previous trees from the database
+    @GetMapping("/previous-trees")
     public String viewSubmissions(Model model) {
         model.addAttribute("trees", treeRepository.findAll());
         return "previous-trees";
     }
 
-    private String convertBSTToJson(TreeNode node) {
+    // Create BST from entered numbers and save to database
+    @PostMapping("/create-tree")
+    public String createTree(@RequestParam("numbers") String numbers, Model model) {
+        BinarySearchTree bst = new BinarySearchTree();
+
+        // Insert numbers into BST
+        String[] numArray = numbers.split(",");
+        for (String num : numArray) {
+            bst.insert(Integer.parseInt(num.trim()));
+        }
+
+        // Convert BST to JSON
+        String treeJson = convertBSTToJson(bst.root);
+
+        // Save to database
+        TreeEntity entity = new TreeEntity();
+        entity.setInputNumbers(numbers);
+        entity.setTreeJson(treeJson);
+        treeRepository.save(entity);
+
+        // Pass data to view
+        model.addAttribute("inputNumbers", numbers);
+        model.addAttribute("treeJson", treeJson);
+
+        return "view-tree";
+    }
+
+    // Convert BST to JSON format
+    public String convertBSTToJson(TreeNode node) {
         if (node == null) {
             return "null";
         }

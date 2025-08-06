@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>View Tree</title>
+</head>
+<body>
+    <h1>Binary Search Tree</h1>
+
+    <!-- Display input numbers -->
+    <p><strong>Input Numbers:</strong> <span th:text="${inputNumbers}"></span></p>
+
+    <!-- Display tree structure in JSON format -->
+    <p><strong>Tree JSON:</strong> <span th:text="${treeJson}"></span></p>
+
+    <br>
+
+    <!-- Button to enter new numbers -->
+    <form action="/enter-numbers" method="get">
+        <button type="submit">Enter New Numbers</button>
+    </form>
+
+    <!-- Button to view saved trees -->
+    <form action="/previous-trees" method="get" style="margin-top: 10px;">
+        <button type="submit">Show Previous</button>
+    </form>
+</body>
+</html>

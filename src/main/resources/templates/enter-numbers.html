@@ -7,7 +7,8 @@
 <body>
     <h1>Enter Numbers</h1>
 
-    <form action="/createTree" method="post">
+    <!-- Form to submit numbers for BST creation -->
+    <form action="/create-tree" method="post">
         <label for="numbers">Enter numbers separated by commas:</label><br>
         <input type="text" id="numbers" name="numbers" required>
         <br><br>
@@ -16,14 +17,11 @@
 
     <br>
 
-    <!-- Button to view previous trees -->
-    <form action="/viewSubmissions" method="get">
+    <!-- Button to view saved trees -->
+    <form action="/previous-trees" method="get">
         <button type="submit">Show Previous</button>
     </form>
 </body>
 </html>
-
-
-
 
 

@@ -7,12 +7,12 @@
 <body>
     <h1>Previous Trees</h1>
 
+    <!-- Table displaying past inputs and tree structures -->
     <table border="1" cellpadding="5">
         <tr>
             <th>Input Numbers</th>
             <th>Tree Structure</th>
         </tr>
-        <!-- Loop through trees -->
         <tr th:each="tree : ${trees}">
             <td th:text="${tree.inputNumbers}"></td>
             <td th:text="${tree.treeJson}"></td>
@@ -20,9 +20,10 @@
     </table>
 
     <br>
-    <a href="/enterNumbers">Back to Enter Numbers</a>
+
+    <!-- Button to go back to number entry -->
+    <form action="/enter-numbers" method="get">
+        <button type="submit">Enter New Numbers</button>
+    </form>
 </body>
 </html>
-
-
-

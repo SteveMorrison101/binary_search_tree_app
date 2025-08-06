@@ -5,7 +5,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
-// Entity class to store tree input and structure
 @Entity
 public class TreeEntity {
 
@@ -16,7 +15,6 @@ public class TreeEntity {
     private String inputNumbers;
     private String treeJson;
 
-    // Getters and Setters
     public Long getId() {
         return id;
     }
@@ -41,4 +39,5 @@ public class TreeEntity {
         this.treeJson = treeJson;
     }
 }
+
 
