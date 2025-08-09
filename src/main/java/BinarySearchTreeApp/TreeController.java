@@ -13,13 +13,11 @@ public class TreeController {
     @Autowired
     private TreeRepository treeRepository;
 
-    // Show form at homepage
     @GetMapping("/")
     public String home() {
         return "enter-numbers";
     }
 
-    // Show page to enter numbers
     @GetMapping("/enter-numbers")
     public String enterNumbers() {
         return "enter-numbers";
@@ -39,8 +37,19 @@ public class TreeController {
 
         // Insert numbers into BST
         String[] numArray = numbers.split(",");
-        for (String num : numArray) {
-            bst.insert(Integer.parseInt(num.trim()));
+        try {
+            for (String num : numArray) {
+                String trimmed = num.trim();
+                if (trimmed.isEmpty()) {
+                    continue;
+                }
+                bst.insert(Integer.parseInt(trimmed));
+            }
+        } catch (NumberFormatException ex) {
+            // Error handling for invalid inputs
+            model.addAttribute("errorMessage", "Invalid input. Please enter only whole numbers separated by commas (e.g., 5,3,7).");
+            model.addAttribute("previousInput", numbers);
+            return "enter-numbers";
         }
 
         // Convert BST to JSON
@@ -64,6 +73,9 @@ public class TreeController {
         if (node == null) {
             return "null";
         }
-        return "{\"value\":" + node.value + ",\"left\":" + convertBSTToJson(node.left) + ",\"right\":" + convertBSTToJson(node.right) + "}";
+        return "{\"value\":" + node.value
+                + ",\"left\":" + convertBSTToJson(node.left)
+                + ",\"right\":" + convertBSTToJson(node.right) + "}";
     }
 }
+

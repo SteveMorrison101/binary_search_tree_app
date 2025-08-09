@@ -1,16 +1,20 @@
 <!DOCTYPE html>
-<html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Enter Numbers</title>
+    <link rel="stylesheet" href="/style.css">
 </head>
 <body>
     <h1>Enter Numbers</h1>
 
+    <!-- Error message -->
+    <div th:if="${errorMessage}" style="color:red;margin-bottom:1rem" th:text="${errorMessage}"></div>
+
     <!-- Form to submit numbers for BST creation -->
     <form action="/create-tree" method="post">
         <label for="numbers">Enter numbers separated by commas:</label><br>
-        <input type="text" id="numbers" name="numbers" required>
+        <input type="text" id="numbers" name="numbers" required th:value="${previousInput}">
         <br><br>
         <button type="submit">Submit</button>
     </form>
@@ -23,5 +27,3 @@
     </form>
 </body>
 </html>
-
-
